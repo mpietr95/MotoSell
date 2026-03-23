@@ -1,0 +1,25 @@
+{% extends 'motosell/base.html' %}
+
+{% block title %}Logowanie — MotoSell{% endblock %}
+
+{% block content %}
+<h1>Logowanie</h1>
+<div class="form-wrap">
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+                <p style="color:red;font-size:0.8rem;margin-top:-0.8rem;margin-bottom:0.8rem;">
+                    {{ field.errors|join:", " }}
+                </p>
+            {% endif %}
+        {% endfor %}
+        {% if form.non_field_errors %}
+            <div class="alert alert-info">{{ form.non_field_errors }}</div>
+        {% endif %}
+        <button type="submit" class="btn btn-primary">Zaloguj się</button>
+    </form>
+</div>
+{% endblock %}

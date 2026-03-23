@@ -1,0 +1,50 @@
+{% extends 'motosell/base.html' %}
+
+{% block title %}MotoSell — Moje oferty{% endblock %}
+
+{% block content %}
+<h1>Moje oferty</h1>
+<a class="btn btn-primary" href="{% url 'vehicle_create' %}" style="margin-bottom:1.5rem;display:inline-block;">
+    + Dodaj nowe ogłoszenie
+</a>
+
+{% if vehicles %}
+<div class="card-grid">
+    {% for v in vehicles %}
+    <div class="card">
+        {% if v.image %}
+            <img src="{{ v.image.url }}" alt="{{ v.title }}">
+        {% else %}
+            <div class="card-no-img">Brak zdjęcia</div>
+        {% endif %}
+        <div class="card-body">
+            <h2>{{ v.title }}</h2>
+            <div class="card-meta">
+                <strong>{{ v.brand }} {{ v.model }}</strong> · {{ v.year }} r.<br>
+                Kategoria: {{ v.get_category_display }}<br>
+                Paliwo: {{ v.get_fuel_type_display }}<br>
+                Przebieg: {{ v.mileage }} km · Moc: {{ v.power }} KM<br>
+                Dodane: {{ v.created_at }}<br>
+                Status:
+                {% if v.published_at %}
+                    <span class="badge badge-published">Opublikowane ({{ v.published_at }})</span>
+                {% else %}
+                    <span class="badge badge-draft">Szkic</span>
+                {% endif %}
+            </div>
+            <div class="card-actions">
+                <a class="btn btn-secondary" href="{% url 'vehicle_edit' v.pk %}">Edytuj</a>
+                {% if not v.published_at %}
+                    <a class="btn btn-success" href="{% url 'vehicle_publish' v.pk %}">Publikuj</a>
+                {% endif %}
+                <a class="btn btn-danger" href="{% url 'vehicle_delete' v.pk %}"
+                   onclick="return confirm('Na pewno usunąć tę ofertę?')">Usuń</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p class="empty">Nie masz jeszcze żadnych ofert.</p>
+{% endif %}
+{% endblock %}

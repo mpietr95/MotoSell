@@ -1,0 +1,21 @@
+# Środowisko wirtualne
+../env/
+
+# Baza danych
+db.sqlite3
+
+# Pliki mediów (zdjęcia użytkowników)
+media/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Django
+*.log
+local_settings.py
+
+# System
+.DS_Store
+Thumbs.db

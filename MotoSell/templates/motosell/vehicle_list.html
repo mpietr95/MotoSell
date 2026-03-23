@@ -1,0 +1,33 @@
+{% extends 'motosell/base.html' %}
+
+{% block title %}MotoSell — Ogłoszenia{% endblock %}
+
+{% block content %}
+<h1>Opublikowane oferty</h1>
+
+{% if vehicles %}
+<div class="card-grid">
+    {% for v in vehicles %}
+    <div class="card">
+        {% if v.image %}
+            <img src="{{ v.image.url }}" alt="{{ v.title }}">
+        {% else %}
+            <div class="card-no-img">Brak zdjęcia</div>
+        {% endif %}
+        <div class="card-body">
+            <h2>{{ v.title }}</h2>
+            <div class="card-meta">
+                <strong>{{ v.brand }} {{ v.model }}</strong> · {{ v.year }} r.<br>
+                Kategoria: {{ v.get_category_display }}<br>
+                Paliwo: {{ v.get_fuel_type_display }}<br>
+                Przebieg: {{ v.mileage }} km · Moc: {{ v.power }} KM<br>
+                Dodane: {{ v.created_at }}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p class="empty">Brak opublikowanych ofert.</p>
+{% endif %}
+{% endblock %}
