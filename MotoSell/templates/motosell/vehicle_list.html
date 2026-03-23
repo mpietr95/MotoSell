@@ -3,31 +3,43 @@
 {% block title %}MotoSell — Ogłoszenia{% endblock %}
 
 {% block content %}
-<h1>Opublikowane oferty</h1>
+<h1 class="mb-4">Opublikowane oferty</h1>
 
 {% if vehicles %}
-<div class="card-grid">
+<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
     {% for v in vehicles %}
-    <div class="card">
-        {% if v.image %}
-            <img src="{{ v.image.url }}" alt="{{ v.title }}">
-        {% else %}
-            <div class="card-no-img">Brak zdjęcia</div>
-        {% endif %}
-        <div class="card-body">
-            <h2>{{ v.title }}</h2>
-            <div class="card-meta">
-                <strong>{{ v.brand }} {{ v.model }}</strong> · {{ v.year }} r.<br>
-                Kategoria: {{ v.get_category_display }}<br>
-                Paliwo: {{ v.get_fuel_type_display }}<br>
-                Przebieg: {{ v.mileage }} km · Moc: {{ v.power }} KM<br>
-                Dodane: {{ v.created_at }}
+    <div class="col">
+        <div class="card h-100 shadow-sm">
+            {% if v.image %}
+                <img src="{{ v.image.url }}" class="card-img-top" alt="{{ v.title }}">
+            {% else %}
+                <div class="card-img-placeholder">
+                    <i class="bi bi-image fs-1"></i>
+                </div>
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ v.title }}</h5>
+                <p class="card-text text-muted small mb-1">
+                    <strong>{{ v.brand }} {{ v.model }}</strong> · {{ v.year }} r.
+                </p>
+                <ul class="list-unstyled small text-muted">
+                    <li><i class="bi bi-tag"></i> {{ v.get_category_display }}</li>
+                    <li><i class="bi bi-fuel-pump"></i> {{ v.get_fuel_type_display }}</li>
+                    <li><i class="bi bi-speedometer2"></i> {{ v.mileage }} km</li>
+                    <li><i class="bi bi-lightning"></i> {{ v.power }} KM</li>
+                </ul>
+            </div>
+            <div class="card-footer text-muted small">
+                <i class="bi bi-calendar3"></i> Dodane: {{ v.created_at }}
             </div>
         </div>
     </div>
     {% endfor %}
 </div>
 {% else %}
-<p class="empty">Brak opublikowanych ofert.</p>
+<div class="text-center text-muted py-5">
+    <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+    Brak opublikowanych ofert.
+</div>
 {% endif %}
 {% endblock %}

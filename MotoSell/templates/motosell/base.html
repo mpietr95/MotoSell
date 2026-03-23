@@ -4,188 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}MotoSell{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f4f4;
-            color: #333;
-        }
-
-        nav {
-            background: #1a1a2e;
-            padding: 0 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 60px;
-        }
-
-        nav .logo {
-            color: #e94560;
-            font-size: 1.4rem;
-            font-weight: bold;
-            text-decoration: none;
-        }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 1.5rem;
-        }
-
-        nav ul a {
-            color: #ccc;
-            text-decoration: none;
-            font-size: 0.95rem;
-        }
-
-        nav ul a:hover { color: #fff; }
-
-        .container {
-            max-width: 1100px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-
-        h1 { margin-bottom: 1.5rem; font-size: 1.6rem; }
-
-        .btn {
-            display: inline-block;
-            padding: 0.45rem 1rem;
-            border-radius: 4px;
-            text-decoration: none;
-            font-size: 0.85rem;
-            cursor: pointer;
-            border: none;
-        }
-
-        .btn-primary   { background: #e94560; color: #fff; }
-        .btn-secondary { background: #444; color: #fff; }
-        .btn-success   { background: #28a745; color: #fff; }
-        .btn-danger    { background: #dc3545; color: #fff; }
-        .btn:hover { opacity: 0.85; }
-
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .card {
-            background: #fff;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
-
-        .card img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-        }
-
-        .card-no-img {
-            width: 100%;
-            height: 180px;
-            background: #ddd;
+        .navbar-brand { font-weight: bold; color: #e94560 !important; }
+        .card-img-top { height: 200px; object-fit: cover; }
+        .card-img-placeholder {
+            height: 200px;
+            background: #e9ecef;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #999;
-            font-size: 0.9rem;
+            color: #adb5bd;
         }
-
-        .card-body { padding: 1rem; }
-
-        .card-body h2 {
-            font-size: 1rem;
-            margin-bottom: 0.4rem;
-        }
-
-        .card-meta {
-            font-size: 0.8rem;
-            color: #777;
-            margin-bottom: 0.8rem;
-            line-height: 1.6;
-        }
-
-        .card-actions {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 0.2rem 0.6rem;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: bold;
-        }
-
-        .badge-published { background: #d4edda; color: #155724; }
-        .badge-draft     { background: #fff3cd; color: #856404; }
-
-        .form-wrap {
-            background: #fff;
-            border-radius: 8px;
-            padding: 2rem;
-            max-width: 680px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
-
-        .form-wrap label {
-            display: block;
-            margin-bottom: 0.25rem;
-            font-size: 0.9rem;
-            font-weight: bold;
-        }
-
-        .form-wrap input,
-        .form-wrap textarea,
-        .form-wrap select {
-            width: 100%;
-            padding: 0.5rem 0.75rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-        }
-
-        .form-wrap textarea { min-height: 100px; resize: vertical; }
-
-        .alert {
-            padding: 0.75rem 1rem;
-            border-radius: 4px;
-            margin-bottom: 1rem;
-        }
-
-        .alert-info { background: #d1ecf1; color: #0c5460; }
-
-        .empty { text-align: center; color: #999; padding: 3rem 0; }
     </style>
 </head>
-<body>
+<body class="bg-light">
 
-<nav>
-    <a class="logo" href="{% url 'vehicle_list' %}">&#127950; MotoSell</a>
-    <ul>
-        <li><a href="{% url 'vehicle_list' %}">Oferty</a></li>
-        {% if user.is_authenticated %}
-            <li><a href="{% url 'my_vehicles' %}">Moje oferty</a></li>
-            <li><a href="{% url 'vehicle_create' %}">Dodaj ogłoszenie</a></li>
-            <li><a href="{% url 'logout' %}">Wyloguj ({{ user.username }})</a></li>
-        {% else %}
-            <li><a href="{% url 'login' %}">Zaloguj się</a></li>
-        {% endif %}
-    </ul>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'vehicle_list' %}">
+            <i class="bi bi-motorcycle"></i> MotoSell
+        </a>
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse" data-bs-target="#navMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMenu">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'vehicle_list' %}">
+                        <i class="bi bi-list-ul"></i> Oferty
+                    </a>
+                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'my_vehicles' %}">
+                            <i class="bi bi-person-lines-fill"></i> Moje oferty
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'vehicle_create' %}">
+                            <i class="bi bi-plus-circle"></i> Dodaj ogłoszenie
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}">
+                            <i class="bi bi-box-arrow-right"></i> Wyloguj ({{ user.username }})
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">
+                            <i class="bi bi-box-arrow-in-right"></i> Zaloguj się
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
 </nav>
 
-<div class="container">
+<div class="container my-4">
     {% block content %}{% endblock %}
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

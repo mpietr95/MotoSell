@@ -5,24 +5,60 @@
 {% endblock %}
 
 {% block content %}
-<h1>{% if vehicle %}Edytuj ofertę{% else %}Dodaj nową ofertę{% endif %}</h1>
+<h1 class="mb-4">
+    {% if vehicle %}
+        <i class="bi bi-pencil-square"></i> Edytuj ofertę
+    {% else %}
+        <i class="bi bi-plus-circle"></i> Dodaj nową ofertę
+    {% endif %}
+</h1>
 
-<div class="form-wrap">
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {% for field in form %}
-            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-            {{ field }}
-            {% if field.errors %}
-                <p style="color:red;font-size:0.8rem;margin-top:-0.8rem;margin-bottom:0.8rem;">
-                    {{ field.errors|join:", " }}
-                </p>
-            {% endif %}
-        {% endfor %}
-        <button type="submit" class="btn btn-primary">
-            {% if vehicle %}Zapisz zmiany{% else %}Dodaj ogłoszenie{% endif %}
-        </button>
-        <a href="{% url 'my_vehicles' %}" class="btn btn-secondary" style="margin-left:0.5rem;">Anuluj</a>
-    </form>
+<div class="card shadow-sm" style="max-width: 700px;">
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="mb-3">
+                <label for="{{ field.id_for_label }}" class="form-label fw-semibold">
+                    {{ field.label }}
+                </label>
+                {% if field.field.widget.input_type == 'select' %}
+                    <select name="{{ field.html_name }}" id="{{ field.id_for_label }}" class="form-select">
+                        {% for val, label in field.field.choices %}
+                            <option value="{{ val }}" {% if field.value == val %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                {% elif field.field.widget.input_type == 'textarea' %}
+                    <textarea name="{{ field.html_name }}" id="{{ field.id_for_label }}"
+                              class="form-control" rows="4">{{ field.value|default:'' }}</textarea>
+                {% else %}
+                    <input type="{{ field.field.widget.input_type }}"
+                           name="{{ field.html_name }}"
+                           id="{{ field.id_for_label }}"
+                           class="form-control"
+                           value="{% if field.field.widget.input_type != 'file' %}{{ field.value|default:'' }}{% endif %}">
+                {% endif %}
+                {% if field.errors %}
+                    <div class="text-danger small mt-1">{{ field.errors|join:", " }}</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <div class="d-flex gap-2 flex-wrap">
+                <button type="submit" class="btn btn-danger">
+                    {% if vehicle %}
+                        <i class="bi bi-save"></i> Zapisz zmiany
+                    {% else %}
+                        <i class="bi bi-plus-circle"></i> Dodaj ogłoszenie
+                    {% endif %}
+                </button>
+                <a href="{% url 'my_vehicles' %}" class="btn btn-secondary">
+                    <i class="bi bi-x-circle"></i> Anuluj
+                </a>
+            </div>
+        </form>
+    </div>
 </div>
 {% endblock %}
