@@ -1,0 +1,24 @@
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.pagination span {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.pagination button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.vehicle-card img {
+  width: 100%;
+  height: 260px;
+  object-fit: contain;
+  background: #f0f0f0;
+}

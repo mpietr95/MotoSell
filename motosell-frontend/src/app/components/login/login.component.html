@@ -1,0 +1,22 @@
+<p>login works!</p>
+a<div class="login-form">
+  <h1>Logowanie</h1>
+
+  @if (error) {
+  <p class="error">{{ error }}</p>
+  }
+
+  <form (ngSubmit)="onSubmit()">
+    <label>
+      Login
+      <input type="text" [(ngModel)]="username" name="username" required />
+    </label>
+
+    <label>
+      Hasło
+      <input type="password" [(ngModel)]="password" name="password" required />
+    </label>
+
+    <button type="submit">Zaloguj się</button>
+  </form>
+</div>

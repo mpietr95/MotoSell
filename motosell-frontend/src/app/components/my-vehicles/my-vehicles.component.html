@@ -1,0 +1,42 @@
+<h1>Moje ogłoszenia</h1>
+
+@if (loading) {
+<p>Ładowanie...</p>
+} @else if (error) {
+<p>{{ error }}</p>
+} @else if (vehicles.length === 0) {
+<p>Nie masz jeszcze żadnych ogłoszeń. <a routerLink="/dodaj">Dodaj pierwsze!</a></p>
+} @else {
+<div class="vehicle-list">
+  @for (vehicle of vehicles; track vehicle.id) {
+  <div class="vehicle-card">
+    <div class="vehicle-info">
+      <h2>{{ vehicle.title }}</h2>
+      <p>{{ vehicle.brand }} {{ vehicle.model }}, {{ vehicle.year }}</p>
+      @if (vehicle.published_at) {
+      <p class="status published">Opublikowane: {{ vehicle.published_at }}</p>
+      } @else {
+      <p class="status draft">Wersja robocza</p>
+      }
+    </div>
+    <div class="vehicle-actions">
+      <a [routerLink]="['/pojazd', vehicle.id]">Zobacz</a>
+      <a [routerLink]="['/edytuj', vehicle.id]">Edytuj</a>
+      @if (!vehicle.published_at) {
+      <button (click)="publish(vehicle.id)">Opublikuj</button>
+      }
+      <button (click)="delete(vehicle.id)">Usuń</button>
+    </div>
+    <div class="gallery-upload">
+      <label>
+        Dodaj zdjęcie do galerii
+        <input type="file" accept="image/*" (change)="onGalleryUpload($event, vehicle.id)" />
+      </label>
+      @if (uploadingFor === vehicle.id) {
+      <p>Przesyłanie...</p>
+      }
+    </div>
+  </div>
+  }
+</div>
+}

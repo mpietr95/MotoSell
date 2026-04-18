@@ -1,0 +1,37 @@
+<div class="register-form">
+  <h1>Rejestracja</h1>
+
+  @if (error) {
+  <p class="error">{{ error }}</p>
+  }
+
+  @if (success) {
+  <p class="success">{{ success }}</p>
+  }
+
+  <form (ngSubmit)="onSubmit()">
+    <label>
+      Login
+      <input type="text" [(ngModel)]="username" name="username" required />
+    </label>
+
+    <label>
+      Email
+      <input type="email" [(ngModel)]="email" name="email" />
+    </label>
+
+    <label>
+      Hasło
+      <input type="password" [(ngModel)]="password" name="password" required />
+    </label>
+
+    <label>
+      Powtórz hasło
+      <input type="password" [(ngModel)]="password2" name="password2" required />
+    </label>
+
+    <button type="submit">Zarejestruj się</button>
+  </form>
+
+  <p class="login-link">Masz już konto? <a routerLink="/logowanie">Zaloguj się</a></p>
+</div>

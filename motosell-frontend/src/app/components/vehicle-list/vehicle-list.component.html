@@ -1,0 +1,45 @@
+<h1>Ogłoszenia</h1>
+
+<div class="filters">
+  <input type="text" [(ngModel)]="searchBrand" (ngModelChange)="filter()" placeholder="Szukaj po marce..." />
+  <select [(ngModel)]="searchCategory" (ngModelChange)="filter()">
+    @for (cat of categories; track cat.value) {
+    <option [value]="cat.value">{{ cat.label }}</option>
+    }
+  </select>
+  <input type="number" [(ngModel)]="searchYear" (ngModelChange)="filter()" placeholder="Rok produkcji..." />
+  <button (click)="reset()">Resetuj</button>
+</div>
+
+@if (loading) {
+<p>Ładowanie...</p>
+} @else if (error) {
+<p>{{ error }}</p>
+} @else if (filtered.length === 0) {
+<p>Brak ogłoszeń spełniających kryteria.</p>
+} @else {
+<div class="vehicle-list">
+  @for (vehicle of paginated; track vehicle.id) {
+  <div class="vehicle-card">
+    @if (vehicle.image) {
+    <img [src]="vehicle.image" [alt]="vehicle.title" />
+    }
+    <div class="vehicle-info">
+      <h2>{{ vehicle.title }}</h2>
+      <p>{{ vehicle.brand }} {{ vehicle.model }}, {{ vehicle.year }}</p>
+      <p>{{ vehicle.mileage }} km · {{ vehicle.engine_capacity }} cm³ · {{ vehicle.power }} KM</p>
+      <p>{{ vehicle.category_display }} · {{ vehicle.fuel_type_display }}</p>
+      <a [routerLink]="['/pojazd', vehicle.id]">Zobacz szczegóły</a>
+    </div>
+  </div>
+  }
+</div>
+
+@if (totalPages > 1) {
+<div class="pagination">
+  <button (click)="prevPage()" [disabled]="currentPage === 1">← Poprzednia</button>
+  <span>Strona {{ currentPage }} z {{ totalPages }}</span>
+  <button (click)="nextPage()" [disabled]="currentPage === totalPages">Następna →</button>
+</div>
+}
+}

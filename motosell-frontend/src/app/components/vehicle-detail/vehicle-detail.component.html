@@ -1,0 +1,35 @@
+@if (loading) {
+<p>Ładowanie...</p>
+} @else if (error) {
+<p>{{ error }}</p>
+} @else if (vehicle) {
+<div class="vehicle-detail">
+  @if (vehicle.image) {
+  <img [src]="vehicle.image" [alt]="vehicle.title" class="main-image" />
+  }
+
+  <div class="vehicle-body">
+    <h1>{{ vehicle.title }}</h1>
+    <p>{{ vehicle.brand }} {{ vehicle.model }}, {{ vehicle.year }}</p>
+    <p>Przebieg: {{ vehicle.mileage }} km</p>
+    <p>Silnik: {{ vehicle.engine_capacity }} cm³, {{ vehicle.power }} KM</p>
+    <p>Paliwo: {{ vehicle.fuel_type_display }}</p>
+    <p>Kategoria: {{ vehicle.category_display }}</p>
+    <p>Sprzedający: {{ vehicle.user }}</p>
+    <p class="description">{{ vehicle.description }}</p>
+
+    @if (vehicle.images.length > 0) {
+    <div class="gallery">
+      <h2>Galeria zdjęć</h2>
+      <div class="gallery-grid">
+        @for (img of vehicle.images; track img.id) {
+        <img [src]="img.image" [alt]="vehicle.title" />
+        }
+      </div>
+    </div>
+    }
+
+    <a routerLink="/">Wróć do listy</a>
+  </div>
+</div>
+}

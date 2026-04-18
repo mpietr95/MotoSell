@@ -1,0 +1,74 @@
+<div class="vehicle-form">
+  <h1>{{ isEditMode ? 'Edytuj ogłoszenie' : 'Dodaj ogłoszenie' }}</h1>
+
+  @if (error) {
+  <p class="error">{{ error }}</p>
+  }
+
+  <form (ngSubmit)="onSubmit()">
+    <label>
+      Tytuł
+      <input type="text" [(ngModel)]="form.title" name="title" required />
+    </label>
+
+    <label>
+      Opis
+      <textarea [(ngModel)]="form.description" name="description" required></textarea>
+    </label>
+
+    <label>
+      Kategoria
+      <select [(ngModel)]="form.category" name="category">
+        @for (cat of categories; track cat.value) {
+        <option [value]="cat.value">{{ cat.label }}</option>
+        }
+      </select>
+    </label>
+
+    <label>
+      Marka
+      <input type="text" [(ngModel)]="form.brand" name="brand" required />
+    </label>
+
+    <label>
+      Model
+      <input type="text" [(ngModel)]="form.model" name="model" required />
+    </label>
+
+    <label>
+      Rok produkcji
+      <input type="number" [(ngModel)]="form.year" name="year" required />
+    </label>
+
+    <label>
+      Przebieg (km)
+      <input type="number" [(ngModel)]="form.mileage" name="mileage" required />
+    </label>
+
+    <label>
+      Pojemność skokowa (cm³)
+      <input type="number" [(ngModel)]="form.engine_capacity" name="engine_capacity" required />
+    </label>
+
+    <label>
+      Moc (KM)
+      <input type="number" [(ngModel)]="form.power" name="power" required />
+    </label>
+
+    <label>
+      Rodzaj paliwa
+      <select [(ngModel)]="form.fuel_type" name="fuel_type">
+        @for (fuel of fuelTypes; track fuel.value) {
+        <option [value]="fuel.value">{{ fuel.label }}</option>
+        }
+      </select>
+    </label>
+
+    <label>
+      Zdjęcie
+      <input type="file" accept="image/*" (change)="onFileChange($event)" />
+    </label>
+
+    <button type="submit">{{ isEditMode ? 'Zapisz zmiany' : 'Dodaj ogłoszenie' }}</button>
+  </form>
+</div>

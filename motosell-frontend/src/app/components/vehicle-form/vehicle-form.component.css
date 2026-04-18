@@ -1,0 +1,47 @@
+.vehicle-form {
+  background: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  max-width: 600px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  color: #444;
+  font-weight: 500;
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+button[type="submit"] {
+  margin-top: 0.5rem;
+  padding: 10px;
+  font-size: 1rem;
+}
+
+.error {
+  background: #ffebee;
+  color: #c00;
+  padding: 0.8rem 1rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 600px) {
+  .vehicle-form {
+    padding: 1.2rem;
+  }
+}

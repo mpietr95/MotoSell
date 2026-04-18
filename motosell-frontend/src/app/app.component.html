@@ -1,0 +1,15 @@
+<nav>
+  <a routerLink="/">MotoSell</a>
+  @if (auth.isLoggedIn()) {
+  <a routerLink="/moje-ogloszenia">Moje ogłoszenia</a>
+  <a routerLink="/dodaj">Dodaj ogłoszenie</a>
+  <button (click)="auth.logout()">Wyloguj</button>
+  } @else {
+  <a routerLink="/logowanie">Zaloguj się</a>
+  <a routerLink="/rejestracja">Zarejestruj się</a>
+  }
+</nav>
+
+<main>
+  <router-outlet />
+</main>
