@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'MotoSell.apps.MotosellConfig',
     'rest_framework',
+    'corsheaders',
 ]
 
 REST_FRAMEWORK = {
@@ -58,6 +59,7 @@ SIMPLE_JWT = {
 }
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -140,3 +142,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 LOGIN_URL = '/konto/login/'
 LOGIN_REDIRECT_URL = '/pojazdy/moje/'
 LOGOUT_REDIRECT_URL = '/pojazdy/'
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:4200',
+]

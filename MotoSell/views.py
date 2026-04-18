@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
+from django.contrib.auth.models import User
 
 from .models import Vehicle
 from .serializers import VehicleSerializer
@@ -110,3 +111,62 @@ class VehicleDeleteView(APIView):
         vehicle.is_deleted = True
         vehicle.save()
         return Response({'detail': 'Oferta została usunięta.'}, status=status.HTTP_200_OK)
+# g. Szczegóły jednego ogłoszenia — dostęp publiczny
+class VehicleDetailView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get(self, request, pk):
+        try:
+            vehicle = Vehicle.objects.get(pk=pk, is_deleted=False)
+        except Vehicle.DoesNotExist:
+            return Response({'detail': 'Nie znaleziono ogłoszenia.'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = VehicleSerializer(vehicle, context={'request': request})
+        return Response(serializer.data)
+# h. Rejestracja nowego użytkownika
+class RegisterView(APIView):
+    permission_classes = []
+
+    def post(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
+        email = request.data.get('email', '')
+
+        if not username or not password:
+            return Response(
+                {'detail': 'Login i hasło są wymagane.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        if User.objects.filter(username=username).exists():
+            return Response(
+                {'detail': 'Użytkownik o tej nazwie już istnieje.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        user = User.objects.create_user(username=username, password=password, email=email)
+        return Response(
+            {'detail': 'Konto zostało utworzone.'},
+            status=status.HTTP_201_CREATED
+        )
+# i. Galeria zdjęć — dodaj zdjęcie do pojazdu
+class VehicleImageUploadView(APIView):
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def post(self, request, pk):
+        try:
+            vehicle = Vehicle.objects.get(pk=pk, is_deleted=False)
+        except Vehicle.DoesNotExist:
+            return Response({'detail': 'Nie znaleziono ogłoszenia.'}, status=status.HTTP_404_NOT_FOUND)
+        if vehicle.user != request.user:
+            return Response({'detail': 'Brak uprawnień.'}, status=status.HTTP_403_FORBIDDEN)
+        
+        image = request.FILES.get('image')
+        if not image:
+            return Response({'detail': 'Brak zdjęcia.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        from .models import VehicleImage
+        from .serializers import VehicleImageSerializer
+        vehicle_image = VehicleImage.objects.create(vehicle=vehicle, image=image)
+        serializer = VehicleImageSerializer(vehicle_image, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
